@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue - Introduktion</title>
+</head>
+<body>
+<div id="app">
+    <button v-if="isFinishedGame" v-on:click="newGame">New Game</button>
+    <p>{{"Die " + dice[0].id + ": " + dice[0].value}} <button id="1" v-on:click="lockButton($event)">{{dice[0].button}}</button></p>
+    <p>{{"Die " + dice[1].id + ": " + dice[1].value}} <button id="2" v-on:click="lockButton($event)">{{dice[1].button}}</button></p>
+    <p>{{"Die " + dice[2].id + ": " + dice[2].value}} <button id="3" v-on:click="lockButton($event)">{{dice[2].button}}</button></p>
+    <p>{{"Die " + dice[3].id + ": " + dice[3].value}} <button id="4" v-on:click="lockButton($event)">{{dice[3].button}}</button></p>
+    <p>{{"Die " + dice[4].id + ": " + dice[4].value}} <button id="5" v-on:click="lockButton($event)">{{dice[4].button}}</button></p>
+    <p>{{ "Total rolls: " + totalRolls }}</p>
+    <p v-if="!isFinishedGame&totalRolls<50&totalRolls>0">
+        <button v-on:click="rerollUnlocked">Reroll unlocked</button>
+    </p>
+    <p><button v-on:click="rerollAll">Roll All</button></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Rulla tärningen?',
+            dice:[
+                {id:1, value:0, locked: false, button: "Lock"},
+                {id:2, value:0, locked: false, button: "Lock"},
+                {id:3, value:0, locked: false, button: "Lock"},
+                {id:4, value:0, locked: false, button: "Lock"},
+                {id:5, value:0, locked: false, button: "Lock"},
+            ],
+
+            isFinishedGame: false,
+            totalRolls:0
+        },
+        methods: {
+            rerollAll: function () {
+
+                for (let i=0, len=this.dice.length; i<len; i++){
+                    this.rerollSpecific(i);
+                }
+                this.totalRolls++;
+
+
+            },
+
+            lockButton: function(event){
+                diceNumber = event.currentTarget.id;
+                console.log(diceNumber)
+                if (this.dice[diceNumber-1].locked === false){
+                    this.dice[diceNumber-1].locked = true;
+                    this.dice[diceNumber-1].button = "Locked!";
+                }
+                else if (this.dice[diceNumber-1].locked === true){
+                    this.dice[diceNumber-1].locked = false;
+                    this.dice[diceNumber-1].button = "Lock";
+                }
+            },
+
+            rerollSpecific: function(index){
+                console.log(index + " reroll specific")
+                console.log(this.dice[index])
+                this.dice[index].value = Math.floor(Math.random()*6+1);
+
+
+            },
+
+            rerollUnlocked: function(){
+                for (i=0, len=this.dice.length; i<len; i++){
+                    console.log("reroll unlocked, i = "+ i)
+                    console.log("dice locked lengh " + len)
+                    console.log("dice values lengh " + this.dice.length)
+                    console.log("dicelocked index " + i + "value: " + this.dice[i].locked)
+                    if(this.dice[i].locked==false){
+                        this.rerollSpecific(i);
+                    }
+                }
+
+                this.totalRolls++;
+            },
+
+            newGame: function(){
+                this.isFinishedGame = false;
+                this.message = 'Gissa ett nummer';
+            }
+        }
+    })
+</script>
+</body>
+</html>
