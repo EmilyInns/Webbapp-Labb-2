@@ -9,7 +9,7 @@
 <p><button v-if="!isGameStarted" v-on:click="newGame">New Game</button></p>
 <div id="app">
 
-    <p>You are on round: {{scores[roundCounter].name}}</p>
+    <p v-if="roundCounter<=12">You are on round: {{scores[roundCounter].name}}</p>
     <p>{{"Die " + dice[0].id + ": " + dice[0].value}} <button id="1" v-on:click="lockButton($event)">{{dice[0].button}}</button></p>
     <p>{{"Die " + dice[1].id + ": " + dice[1].value}} <button id="2" v-on:click="lockButton($event)">{{dice[1].button}}</button></p>
     <p>{{"Die " + dice[2].id + ": " + dice[2].value}} <button id="3" v-on:click="lockButton($event)">{{dice[2].button}}</button></p>
