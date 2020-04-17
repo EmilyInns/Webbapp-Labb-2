@@ -162,22 +162,39 @@
                     }
                     this.upperTotal += this.scores[this.roundCounter].score;
                 }
-                else if(this.roundCounter==6){
-                    console.log(this.scores[this.roundCounter].name + " Three of a kind");
-                    console.log("roundcounter: " + this.roundCounter);
-                }
-                else if(this.roundCounter==7){
-                    console.log(this.scores[this.roundCounter].name + " Four of a kind");
-                    console.log("roundcounter: " + this.roundCounter);
 
-                }
 
-                else if (this.roundCounter>7&this.roundCounter<12) {
+                else if (this.roundCounter>5&this.roundCounter<12) {
                     const sortedDice = this.dice.slice().sort((a, b) => a.value - b.value);
                     const numString = "" + sortedDice[0].value + sortedDice[1].value + sortedDice[2].value + sortedDice[3].value + sortedDice[4].value
                     console.log(numString);
 
-                    if (this.roundCounter == 8) {
+                    if(this.roundCounter==6){
+                        console.log(this.scores[this.roundCounter].name + " Three of a kind");
+                        const threeIdenticalRegex = RegExp('(?=(.)\\1\\1).{3}');
+                        if (threeIdenticalRegex.test(numString)){
+                            const index = numString.search(threeIdenticalRegex);
+                            for(let i=index, len=numString.length; i<index+2; i++){
+                                this.scores[this.roundCounter].score += this.dice[i].value;
+                            }
+                        }
+                            console.log("roundcounter: " + this.roundCounter);
+                    }
+                    else if(this.roundCounter==7){
+                        console.log(this.scores[this.roundCounter].name + " Four of a kind");
+                        const fourIdenticalRegex = RegExp('(?=(.)\\1\\1\\1).{4}');
+                        if (fourIdenticalRegex.test(numString)){
+                            const index = numString.search(fourIdenticalRegex);
+                            for(let i=index, len=numString.length; i<index+3; i++){
+                                this.scores[this.roundCounter].score += this.dice[i].value;
+                            }
+
+                        }
+                        console.log("roundcounter: " + this.roundCounter);
+
+                    }
+
+                    else if (this.roundCounter == 8) {
                         console.log(this.scores[this.roundCounter].name + " Small Straight");
                         //const regex = RegExp('12345')
                         if (numString==="12345") {
