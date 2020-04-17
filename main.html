@@ -191,9 +191,25 @@
                         }
                     } else if (this.roundCounter == 10) {
                         console.log(this.scores[this.roundCounter].name + " Full House");
-                        if (true) {
-                            for(let i=0, len=this.dice.length; i<len; i++){
-                                this.scores[this.roundCounter].score += this.dice[i].value;
+                        const threeIdenticalRegex = RegExp('(?=(.)\\1\\1).{3}');
+                        const allIdenticalRegex = RegExp('^(.)\\1*$');
+                        console.log(threeIdenticalRegex.test(numString))
+                        console.log(!(allIdenticalRegex.test(numString)))
+
+                        if (threeIdenticalRegex.test(numString)&!(allIdenticalRegex.test(numString))) {
+                            const index = numString.search(threeIdenticalRegex);
+                            console.log("index: " +index);
+                            let isFullHouse = false;
+                            if (index==2){
+                                isFullHouse = allIdenticalRegex.test(numString.substring(0,2));
+                            }
+                            if (index==0){
+                                isFullHouse = allIdenticalRegex.test(numString.substring(3,5));
+                            }
+                            if (isFullHouse){
+                                for(let i=0, len=this.dice.length; i<len; i++){
+                                    this.scores[this.roundCounter].score += this.dice[i].value;
+                            }
                             }
                         }
                     } else if (this.roundCounter == 11) {
@@ -231,6 +247,8 @@
                 for (let i=0, len=this.dice.length; i<len; i++){
                     this.rerollSpecific(i);
                 }
+
+
                 this.totalRolls++;
 
 
