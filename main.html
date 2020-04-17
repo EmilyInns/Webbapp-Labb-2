@@ -174,7 +174,8 @@
                         const threeIdenticalRegex = RegExp('(?=(.)\\1\\1).{3}');
                         if (threeIdenticalRegex.test(numString)){
                             const index = numString.search(threeIdenticalRegex);
-                            for(let i=index, len=numString.length; i<index+2; i++){
+                            for(let i=index, len=index+3; i<len; i++){
+                                console.log("index: " + i + " value: " + this.dice[i].value)
                                 this.scores[this.roundCounter].score += this.dice[i].value;
                             }
                         }
@@ -185,10 +186,9 @@
                         const fourIdenticalRegex = RegExp('(?=(.)\\1\\1\\1).{4}');
                         if (fourIdenticalRegex.test(numString)){
                             const index = numString.search(fourIdenticalRegex);
-                            for(let i=index, len=numString.length; i<index+3; i++){
+                            for(let i=index, len=index+4; i<len; i++){
                                 this.scores[this.roundCounter].score += this.dice[i].value;
                             }
-
                         }
                         console.log("roundcounter: " + this.roundCounter);
 
@@ -236,6 +236,7 @@
                             this.scores[this.roundCounter].score = 50
                         }
                     }
+                    this.lowerTotal += this.scores[this.roundCounter].score;
                 }
 
                 else if(this.roundCounter==12){
@@ -243,6 +244,7 @@
                     for(let i=0, len=this.dice.length; i<len; i++){
                         this.scores[this.roundCounter].score += this.dice[i].value;
                     }
+                    this.lowerTotal += this.scores[this.roundCounter].score;
                 }
 
                 for (let j=0, len=this.dice.length; j<len; j++){
@@ -260,11 +262,11 @@
 
 
             rerollAll: function () {
-
+/*
                 for (let i=0, len=this.dice.length; i<len; i++){
                     this.rerollSpecific(i);
                 }
-
+*/
 
                 this.totalRolls++;
 
