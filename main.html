@@ -142,7 +142,7 @@
             upperTotal: 0,
             lowerTotal: 0,
             grandTotal: 0,
-            roundCounter:0
+            roundCounter:8
         },
         methods: {
             newGame: function(){
@@ -171,30 +171,34 @@
                     console.log("roundcounter: " + this.roundCounter);
 
                 }
-                else if(this.roundCounter==8){
-                    console.log(this.scores[this.roundCounter].name + " Small Straight");
-                    if(true){
-                        this.scores[this.roundCounter].score = 30
-                    }
-                }
-                else if(this.roundCounter==9){
-                    console.log(this.scores[this.roundCounter].name + " Large Straight");
-                    if(true){
-                        this.scores[this.roundCounter].score = 40
-                    }
-                }
 
-                else if(this.roundCounter==10){
-                    console.log(this.scores[this.roundCounter].name + " Full House");
-                    if(true){
-                        this.scores[this.roundCounter].score = 50
-                    }
-                }
+                else if (this.roundCounter>7&this.roundCounter<12) {
+                    const sortedDice = this.dice.slice().sort((a, b) => a.value - b.value);
+                    const numString = "" + sortedDice[0].value + sortedDice[1].value + sortedDice[2].value + sortedDice[3].value + sortedDice[4].value
+                    console.log(numString);
 
-                else if(this.roundCounter==11){
-                    console.log(this.scores[this.roundCounter].name + " Yatzy");
-                    if(true){
-                        this.scores[this.roundCounter].score = 50
+                    if (this.roundCounter == 8) {
+                        console.log(this.scores[this.roundCounter].name + " Small Straight");
+                        //const regex = RegExp('12345')
+                        if (numString==="12345") {
+                            this.scores[this.roundCounter].score = 30
+                        }
+
+                    } else if (this.roundCounter == 9) {
+                        console.log(this.scores[this.roundCounter].name + " Large Straight");
+                        if (true) {
+                            this.scores[this.roundCounter].score = 40
+                        }
+                    } else if (this.roundCounter == 10) {
+                        console.log(this.scores[this.roundCounter].name + " Full House");
+                        if (true) {
+                            this.scores[this.roundCounter].score = 50
+                        }
+                    } else if (this.roundCounter == 11) {
+                        console.log(this.scores[this.roundCounter].name + " Yatzy");
+                        if (true) {
+                            this.scores[this.roundCounter].score = 50
+                        }
                     }
                 }
 
@@ -228,6 +232,8 @@
 
 
             },
+
+
 
             lockButton: function(event){
                 diceNumber = event.currentTarget.id;
