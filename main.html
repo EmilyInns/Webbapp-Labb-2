@@ -3,20 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <title>Vue - Introduktion</title>
+    <link rel="stylesheet" type="text/css" href="css/yatzyCss.css">
 </head>
 <body>
+<p><button v-if="!isGameStarted" v-on:click="newGame">New Game</button></p>
 <div id="app">
-    <button v-if="isFinishedGame" v-on:click="newGame">New Game</button>
+
+    <p>You are on round: {{scores[roundCounter].name}}</p>
     <p>{{"Die " + dice[0].id + ": " + dice[0].value}} <button id="1" v-on:click="lockButton($event)">{{dice[0].button}}</button></p>
     <p>{{"Die " + dice[1].id + ": " + dice[1].value}} <button id="2" v-on:click="lockButton($event)">{{dice[1].button}}</button></p>
     <p>{{"Die " + dice[2].id + ": " + dice[2].value}} <button id="3" v-on:click="lockButton($event)">{{dice[2].button}}</button></p>
     <p>{{"Die " + dice[3].id + ": " + dice[3].value}} <button id="4" v-on:click="lockButton($event)">{{dice[3].button}}</button></p>
     <p>{{"Die " + dice[4].id + ": " + dice[4].value}} <button id="5" v-on:click="lockButton($event)">{{dice[4].button}}</button></p>
     <p>{{ "Total rolls: " + totalRolls }}</p>
-    <p v-if="!isFinishedGame&totalRolls<50&totalRolls>0">
-        <button v-on:click="rerollUnlocked">Reroll unlocked</button>
+    <article v-if="!isFinishedGame&totalRolls>0">
+    <p>
+        <button v-if="totalRolls<3" v-on:click="rerollUnlocked">Reroll unlocked</button>
+    <p><button v-on:click="submitScore">Submit score for round</button></p>
     </p>
-    <p><button v-on:click="rerollAll">Roll All</button></p>
+    </article>
+    <p><button  v-if="totalRolls<1" v-on:click="rerollAll">Roll All</button></p>
+    <table>
+        <thead>
+        <tr>
+            <th colspan="2">Score!</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th colspan="2">Upper section:</th>
+        </tr>
+
+        <tr>
+            <td>{{scores[0].name}}:</td>
+            <td>{{scores[0].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[1].name}}:</td>
+            <td>{{scores[1].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[2].name}}:</td>
+            <td>{{scores[2].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[3].name}}:</td>
+            <td>{{scores[3].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[4].name}}:</td>
+            <td>{{scores[4].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[5].name}}:</td>
+            <td>{{scores[5].score}}</td>
+        </tr>
+        <tr>
+            <td><b>Total:</b></td>
+            <td>{{upperTotal}}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Lower Section:</th>
+        </tr>
+        <tr>
+            <td>{{scores[6].name}}:</td>
+            <td>{{scores[6].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[7].name}}:</td>
+            <td>{{scores[7].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[8].name}}:</td>
+            <td>{{scores[8].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[9].name}}:</td>
+            <td>{{scores[9].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[10].name}}:</td>
+            <td>{{scores[10].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[11].name}}:</td>
+            <td>{{scores[11].score}}</td>
+        </tr>
+        <tr>
+            <td>{{scores[12].name}}:</td>
+            <td>{{scores[12].score}}</td>
+        </tr>
+        <tr>
+            <td><b>Total:</b></td>
+            <td>{{lowerTotal}}</td>
+        </tr>
+        </tbody>
+        <tr>
+            <td><b>GRAND TOTAL:</b></td>
+            <td>{{grandTotal}}</td>
+        </tr>
+    </table>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -35,9 +122,103 @@
             ],
 
             isFinishedGame: false,
-            totalRolls:0
+            isGameStarted: false,
+            totalRolls:0,
+            scores:[
+                {name: "Ones", score: 0},
+                {name: "Twos", score: 0},
+                {name: "Threes", score: 0},
+                {name: "Fours", score: 0},
+                {name: "Fives", score: 0},
+                {name: "Sixes", score: 0},
+                {name: "Three of a kind", score: 0},
+                {name: "Four of a kind", score: 0},
+                {name: "Small Straight", score: 0},
+                {name: "Large Straight", score: 0},
+                {name: "Full House", score: 0},
+                {name: "Yatzy", score: 0},
+                {name: "Chance", score: 0},
+            ],
+            upperTotal: 0,
+            lowerTotal: 0,
+            grandTotal: 0,
+            roundCounter:0
         },
         methods: {
+            newGame: function(){
+                console.log("hey");
+                console.log("hey" + this.isGameStarted);
+                this.isGameStarted = true;
+            },
+
+            submitScore: function(){
+                console.log("beginning of submitscore " +this.roundCounter);
+                if (this.roundCounter<=5){
+                    for (let i=0, len=this.dice.length; i<len; i++){
+                        if (this.dice[i].value== this.roundCounter+1){
+                            this.scores[this.roundCounter].score += this.dice[i].value;
+                        }
+                        console.log("roundcounter: " + this.roundCounter);
+                    }
+                    this.upperTotal += this.scores[this.roundCounter].score;
+                }
+                else if(this.roundCounter==6){
+                    console.log(this.scores[this.roundCounter].name + " Three of a kind");
+                    console.log("roundcounter: " + this.roundCounter);
+                }
+                else if(this.roundCounter==7){
+                    console.log(this.scores[this.roundCounter].name + " Four of a kind");
+                    console.log("roundcounter: " + this.roundCounter);
+
+                }
+                else if(this.roundCounter==8){
+                    console.log(this.scores[this.roundCounter].name + " Small Straight");
+                    if(true){
+                        this.scores[this.roundCounter].score = 30
+                    }
+                }
+                else if(this.roundCounter==9){
+                    console.log(this.scores[this.roundCounter].name + " Large Straight");
+                    if(true){
+                        this.scores[this.roundCounter].score = 40
+                    }
+                }
+
+                else if(this.roundCounter==10){
+                    console.log(this.scores[this.roundCounter].name + " Full House");
+                    if(true){
+                        this.scores[this.roundCounter].score = 50
+                    }
+                }
+
+                else if(this.roundCounter==11){
+                    console.log(this.scores[this.roundCounter].name + " Yatzy");
+                    if(true){
+                        this.scores[this.roundCounter].score = 50
+                    }
+                }
+
+                else if(this.roundCounter==12){
+                    console.log(this.scores[this.roundCounter].name + " Chance");
+                    for(let i=0, len=this.dice.length; i<len; i++){
+                        this.scores[this.roundCounter].score += this.dice[i].value;
+                    }
+                }
+
+                for (let j=0, len=this.dice.length; j<len; j++){
+                    this.dice[j].value = 0;
+                    if (this.dice[j].locked==true){
+                        this.dice[j].locked = false;
+                        this.dice[j].button = "Lock";
+                    }
+                }
+                this.grandTotal += this.scores[this.roundCounter].score;
+                this.roundCounter++;
+                this.totalRolls = 0;
+
+            },
+
+
             rerollAll: function () {
 
                 for (let i=0, len=this.dice.length; i<len; i++){
@@ -62,8 +243,6 @@
             },
 
             rerollSpecific: function(index){
-                console.log(index + " reroll specific")
-                console.log(this.dice[index])
                 this.dice[index].value = Math.floor(Math.random()*6+1);
 
 
@@ -71,10 +250,6 @@
 
             rerollUnlocked: function(){
                 for (i=0, len=this.dice.length; i<len; i++){
-                    console.log("reroll unlocked, i = "+ i)
-                    console.log("dice locked lengh " + len)
-                    console.log("dice values lengh " + this.dice.length)
-                    console.log("dicelocked index " + i + "value: " + this.dice[i].locked)
                     if(this.dice[i].locked==false){
                         this.rerollSpecific(i);
                     }
@@ -83,10 +258,7 @@
                 this.totalRolls++;
             },
 
-            newGame: function(){
-                this.isFinishedGame = false;
-                this.message = 'Gissa ett nummer';
-            }
+
         }
     })
 </script>
