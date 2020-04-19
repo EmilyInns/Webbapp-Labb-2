@@ -6,23 +6,30 @@
     <link rel="stylesheet" type="text/css" href="css/yatzyCss.css">
 </head>
 <body>
+
 <div id="app">
+    <diceContainer>
+        <article><p  class="square">{{dice[0].value}}</p><button id="1" v-on:click="lockButton($event)">{{dice[0].button}}</button><p></p></article>
+        <article><p  class="square">{{dice[1].value}}</p><button id="2" v-on:click="lockButton($event)">{{dice[1].button}}</button><p></p></article>
+        <article><p  class="square">{{dice[2].value}}</p><button id="3" v-on:click="lockButton($event)">{{dice[2].button}}</button><p></p></article>
+        <article><p  class="square">{{dice[3].value}}</p><button id="4" v-on:click="lockButton($event)">{{dice[3].button}}</button><p></p></article>
+        <article><p  class="square">{{dice[4].value}}</p><button id="5" v-on:click="lockButton($event)">{{dice[4].button}}</button><p></p></article>
+
+    </diceContainer>
+    <gameParts>
     <article class="intro" v-if="!isGameStarted">
-        <p>Welcome to Yatzy! In this game, you roll 5 dice to try and fill the scoreboard below.
+        <p v-if="gamesWon<1">Welcome to Yatzy! In this game, you roll 5 dice to try and fill the scoreboard below.
             In this version you will do each round in order.
             To compensate for the extra difficulty you will have one extra reroll. Enjoy! </p>
+        <p v-if="gamesWon>0">Congratulations!!! Your total score was {{grandTotal}}</p>
         <button v-on:click="newGame">New Game</button></p>
     </article>
     <div v-if="isGameStarted">
     <article class="dice">
         <p v-if="roundCounter<=12">You are on round: {{scores[roundCounter].name}}</p>
-        <p>{{"Die " + dice[0].id + ": " + dice[0].value}} <button id="1" v-on:click="lockButton($event)">{{dice[0].button}}</button></p>
-        <p>{{"Die " + dice[1].id + ": " + dice[1].value}} <button id="2" v-on:click="lockButton($event)">{{dice[1].button}}</button></p>
-        <p>{{"Die " + dice[2].id + ": " + dice[2].value}} <button id="3" v-on:click="lockButton($event)">{{dice[2].button}}</button></p>
-        <p>{{"Die " + dice[3].id + ": " + dice[3].value}} <button id="4" v-on:click="lockButton($event)">{{dice[3].button}}</button></p>
-        <p>{{"Die " + dice[4].id + ": " + dice[4].value}} <button id="5" v-on:click="lockButton($event)">{{dice[4].button}}</button></p>
         <p>{{ "Total rolls: " + totalRolls }}</p>
     </article>
+
     <article class="rollButtons">
     <article v-if="!isFinishedGame&totalRolls>0">
         <p>
@@ -34,6 +41,8 @@
 
     </article>
     </div>
+    </gameParts>
+    <scoreList>
     <article class="score">
     <table>
         <thead>
@@ -116,6 +125,7 @@
         </tr>
     </table>
     </article>
+    </scoreList>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -154,7 +164,8 @@
             upperTotal: 0,
             lowerTotal: 0,
             grandTotal: 0,
-            roundCounter:0
+            roundCounter:0,
+            gamesWon:0
         },
         methods: {
             newGame: function(){
@@ -186,9 +197,12 @@
                         const threeIdenticalRegex = RegExp('(?=(.)\\1\\1).{3}');
                         if (threeIdenticalRegex.test(numString)){
                             const index = numString.search(threeIdenticalRegex);
+                            for(let i=0, len=this.dice.length; i<len; i++){
+                                console.log("index: " + i + " value: " + sortedDice[i].value)
+                            }
                             for(let i=index, len=index+3; i<len; i++){
-                                console.log("index: " + i + " value: " + this.dice[i].value)
-                                this.scores[this.roundCounter].score += this.dice[i].value;
+                                console.log("index: " + i + " value: " + sortedDice[i].value)
+                                this.scores[this.roundCounter].score += sortedDice[i].value;
                             }
                         }
                             console.log("roundcounter: " + this.roundCounter);
@@ -196,10 +210,13 @@
                     else if(this.roundCounter==7){
                         console.log(this.scores[this.roundCounter].name + " Four of a kind");
                         const fourIdenticalRegex = RegExp('(?=(.)\\1\\1\\1).{4}');
+                        for(let i=0, len=this.dice.length; i<len; i++){
+                            console.log("index: " + i + " value: " + sortedDice[i].value)
+                        }
                         if (fourIdenticalRegex.test(numString)){
                             const index = numString.search(fourIdenticalRegex);
                             for(let i=index, len=index+4; i<len; i++){
-                                this.scores[this.roundCounter].score += this.dice[i].value;
+                                this.scores[this.roundCounter].score += sortedDice[i].value;
                             }
                         }
                         console.log("roundcounter: " + this.roundCounter);
@@ -270,6 +287,11 @@
                 this.grandTotal += this.scores[this.roundCounter].score;
                 this.roundCounter++;
                 this.totalRolls = 0;
+
+                if (this.roundCounter===13){
+                    this.gamesWon++;
+                    this.isGameStarted=false;
+                }
 
             },
 

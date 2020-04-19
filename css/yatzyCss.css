@@ -4,9 +4,9 @@ section{
     grid-template-rows: auto auto auto auto auto;
     grid-template-areas:
             "header"
-            "dice"
-            "rollButtons"
-            "Score1"
+            "diceContainer"
+            "gameParts"
+            "scoreList"
             "footer";
     grid-gap: 2px;
 
@@ -19,11 +19,36 @@ body{
     text-align: center;
 }
 
+
+diceContainer{
+    background-color: white;
+    display: inline-grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: auto auto auto auto auto;
+    grid-column-gap: 70px;
+    vertical-align: center;
+
+}
+
+p.square{
+    height: 75px;
+    width: 75px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 50px;
+    background-color: red;
+
+}
+
 table{
     border-collapse: collapse;
     margin-right:auto;
     margin-left:auto;
+    width: 100%;
+
 }
+
+tr:nth-child(even) {background-color: pink;}
 
 table,
 td {
@@ -34,6 +59,7 @@ thead,
 tfoot {
     background-color: #333;
     color: #fff;
+    text-align: center;
 }
 
 article.dice{
@@ -42,9 +68,11 @@ article.dice{
 }
 
 article.score{
+    margin-left: 40%;
+    margin-right: 40%;
     grid-area: Score1;
     text-align: center;
-    background-color: pink;
+    background-color: lightpink;
 }
 
 article.intro{
