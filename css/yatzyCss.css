@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
 section{
     display: grid;
     grid-template-columns: 1fr;
@@ -13,19 +16,24 @@ section{
 }
 
 body{
-    background-color: grey;
     margin-left: 30%;
     margin-right: 30%;
+    background-color: #802f46;
     text-align: center;
+    color: white;
+    font-family: 'Rubik', sans-serif;
+
 }
 
 
 diceContainer{
-    background-color: white;
-    display: inline-grid;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #802f46;
+    display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: auto auto auto auto auto;
-    grid-column-gap: 70px;
+    grid-column-gap: 10%;
     vertical-align: center;
 
 }
@@ -36,7 +44,9 @@ p.square{
     text-align: center;
     line-height: 75px;
     font-size: 50px;
-    background-color: red;
+    background-color: white;
+    color: #521d2c;
+    font-family: 'Patua One';
 
 }
 
@@ -44,42 +54,51 @@ table{
     border-collapse: collapse;
     margin-right:auto;
     margin-left:auto;
-    width: 100%;
+    width:200px;
 
 }
 
-tr:nth-child(even) {background-color: pink;}
+tr:nth-child(even) {background-color: #702b3e;}
 
 table,
 td {
-    border: 1px solid;
+    border: 1px solid white;
+    column-width: auto;
+}
+
+button{
+border-radius: 4px;
+    color: #521d2c;
+    font-family: 'Rubik', sans-serif;
 }
 
 thead,
 tfoot {
-    background-color: #333;
-    color: #fff;
+    background-color: white;
+    color: #521d2c;
     text-align: center;
 }
 
 article.dice{
     text-align: center;
-    background-color: aqua;
+    background-color: #802f46;
 }
 
 article.score{
-    margin-left: 40%;
-    margin-right: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
     grid-area: Score1;
     text-align: center;
-    background-color: lightpink;
+    background-color: #521d2c;
+    color: white;
 }
 
 article.intro{
-    background-color: orange;
+    background-color: #802f46;
 }
 
 article.rollButtons{
     text-align: center;
-    background-color: yellow;
+    background-color: #802f46;
 }

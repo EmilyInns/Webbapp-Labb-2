@@ -9,25 +9,25 @@
 
 <div id="app">
     <diceContainer>
-        <article><p  class="square">{{dice[0].value}}</p><button id="1" v-on:click="lockButton($event)">{{dice[0].button}}</button><p></p></article>
-        <article><p  class="square">{{dice[1].value}}</p><button id="2" v-on:click="lockButton($event)">{{dice[1].button}}</button><p></p></article>
-        <article><p  class="square">{{dice[2].value}}</p><button id="3" v-on:click="lockButton($event)">{{dice[2].button}}</button><p></p></article>
-        <article><p  class="square">{{dice[3].value}}</p><button id="4" v-on:click="lockButton($event)">{{dice[3].button}}</button><p></p></article>
-        <article><p  class="square">{{dice[4].value}}</p><button id="5" v-on:click="lockButton($event)">{{dice[4].button}}</button><p></p></article>
+        <article><p  class="square">{{dice[0].value}}</p><p><button id="1" v-on:click="lockButton($event)">{{dice[0].button}}</button></p></article>
+        <article><p  class="square">{{dice[1].value}}</p><p><button id="2" v-on:click="lockButton($event)">{{dice[1].button}}</button></p></article>
+        <article><p  class="square">{{dice[2].value}}</p><p><button id="3" v-on:click="lockButton($event)">{{dice[2].button}}</button></p></article>
+        <article><p  class="square">{{dice[3].value}}</p><p><button id="4" v-on:click="lockButton($event)">{{dice[3].button}}</button></p></article>
+        <article><p  class="square">{{dice[4].value}}</p><p><button id="5" v-on:click="lockButton($event)">{{dice[4].button}}</button></p></article>
 
     </diceContainer>
     <gameParts>
     <article class="intro" v-if="!isGameStarted">
         <p v-if="gamesWon<1">Welcome to Yatzy! In this game, you roll 5 dice to try and fill the scoreboard below.
             In this version you will do each round in order.
-            To compensate for the extra difficulty you will have one extra reroll. Enjoy! </p>
-        <p v-if="gamesWon>0">Congratulations!!! Your total score was {{grandTotal}}</p>
+            To compensate for the extra difficulty you will four rolls per round. Enjoy! </p>
+        <p v-if="gamesWon>0">Congratulations! Your total score was {{grandTotal}}.</p>
         <button v-on:click="newGame">New Game</button></p>
     </article>
     <div v-if="isGameStarted">
     <article class="dice">
         <p v-if="roundCounter<=12">You are on round: {{scores[roundCounter].name}}</p>
-        <p>{{ "Total rolls: " + totalRolls }}</p>
+        <p>{{ "Rolls: " + totalRolls }}</p>
     </article>
 
     <article class="rollButtons">
@@ -169,8 +169,16 @@
         },
         methods: {
             newGame: function(){
+                this.grandTotal=0;
+                this.upperTotal=0;
+                this.lowerTotal=0;
+                this.roundCounter = 0;
+                for(let i=0, len=this.scores.length; i<len; i++){
+                    this.scores[i].score = 0;
+                }
               this.isGameStarted = true;
               console.log("hey");
+
             },
 
             submitScore: function(){
